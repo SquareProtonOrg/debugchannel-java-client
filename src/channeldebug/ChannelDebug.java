@@ -52,22 +52,17 @@ public class ChannelDebug {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         //String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
-        Object normalisedObject = wrap(normalise(object));
-        System.out.println(normalisedObject);
+        Object normalisedObject = wrap(normalise(object, new HashSet<Integer>()));
         String urlParameters = gson.toJson(normalisedObject);
 
         // Send post request
         con.setDoOutput(true);
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        System.out.println(String.format(gson.toJson(normalisedObject)));
         wr.writeBytes(urlParameters);
         wr.flush();
         wr.close();
 
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post parameters : " + urlParameters);
-        System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
@@ -79,12 +74,10 @@ public class ChannelDebug {
         }
         in.close();
 
-        //print result
-        System.out.println(response.toString());
 
     }
 
-    private Object normalise(Object object)
+    private Object normalise(Object object, Set<Integer> history)
     {
         if(null == object) {
             return null;
@@ -100,6 +93,7 @@ public class ChannelDebug {
             Map<String, Object> properties = new HashMap<String, Object>();
             Map<String, Object> statics = new HashMap<String, Object>();
             Map<String, Object> constants = new HashMap<String, Object>();
+            boolean recursionDetected = false;
             for(Field field : object.getClass().getDeclaredFields()) {
                 field.setAccessible(true);
                 int modifiers = field.getModifiers();
@@ -117,10 +111,20 @@ public class ChannelDebug {
 
                 if(fieldValue == null) {
                     fieldMap.put(field.getName(), null);
-                } else if(isPrimitive(field.get(object))) {
-                    fieldMap.put(field.getName(), field.get(object));
+                } else if(isPrimitive(fieldValue)) {
+                    fieldMap.put(field.getName(), fieldValue);
                 } else {
-                    fieldMap.put(field.getName(), normalise(field.get(object)));
+                    int hash = System.identityHashCode(fieldValue);
+                    if(history.contains(hash)) {
+                        System.out.println("DETECTED REFERENCE");
+                        recursionDetected = true;
+                        fieldMap.put(field.getName(), "REFERENCE");
+                    } else {
+                        Set<Integer> historyNew = new HashSet<Integer>(history);
+                        historyNew.add(System.identityHashCode(object));
+                        fieldMap.put(field.getName(), normalise(fieldValue, historyNew));
+                    }
+
                 }
             }
             map.put("class", getClassChain(object.getClass()));
@@ -128,6 +132,7 @@ public class ChannelDebug {
             map.put("static", statics);
             map.put("constants", constants);
             map.put("methods", getMethods(object.getClass()));
+            System.out.println(new Gson().toJson(map));
             return map;
         }catch(Exception e) {
             throw new RuntimeException(e);
