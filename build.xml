@@ -1,7 +1,6 @@
-<project default="all">
+<project default="package">
 
-    <property name="project.title" value="UberDebug"/>
-    <property name="main.class" value="uberdebug.client.Main"/>
+    <property name="project.title" value="ChannelDebug"/>
 
     <property name="build.dir" value="${basedir}/build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
@@ -15,8 +14,6 @@
         <fileset dir="${lib.dir}">
             <include name="*.jar"/>
         </fileset>
-
-        <!--<pathelement path="${build.dir}"/>-->
     </path>
 
 
@@ -35,19 +32,9 @@
 
     <target name="package" depends="compile">
         <jar destfile="${artifact.name}" basedir="${classes.dir}">
-            <manifest>
-                <attribute name="Main-Class" value="${main.class}"/>
-            </manifest>
             <zipfileset src="lib/gson-2.2.4.jar" includes="**/*/"/>
         </jar>
 
     </target>
-
-    <target name="run" depends="package">
-        <java jar="${artifact.name}" fork="yes"/>
-    </target>
-
-    <target name="all" depends="clean, package, run"/>
-
 
 </project>
