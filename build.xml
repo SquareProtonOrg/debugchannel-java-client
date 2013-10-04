@@ -37,4 +37,34 @@
 
     </target>
 
+
+    <property name="test.dir" value="${basedir}/test"/>
+    <property name="test.classes.dir" value="${build.dir}/test"/>
+
+    <path id="test.classpath">
+        <path refid="lib.classpath"/>
+        <pathelement location="${artifact.name}"/>
+    </path>
+
+    <target name="prepare-test">
+        <mkdir dir="${test.classes.dir}"/>
+    </target>
+
+    <target name="compile-test" depends="prepare-test, package">
+        <javac srcdir="${test.dir}" destdir="${test.classes.dir}" debug="yes" classpathref="test.classpath">
+        </javac>
+    </target>
+
+    <target name="test" depends="compile-test, package">
+        <junit printsummary="yes" fork="no">
+            <classpath>
+                <path path="${artifact.name}"/>
+                <path path="${test.classes.dir}"/>
+            </classpath>
+            <formatter type="plain"/>
+            <test name="channeldebug.ChannelDebugTest"/>
+        </junit>
+    </target>
+
+
 </project>
