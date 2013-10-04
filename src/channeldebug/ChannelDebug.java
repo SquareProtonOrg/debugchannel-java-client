@@ -86,6 +86,10 @@ public class ChannelDebug {
 
     private Object normalise(Object object)
     {
+        if(null == object) {
+            return null;
+        }
+
         if(isPrimitive(object)) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put(SCALAR_KEY, object);
@@ -147,7 +151,7 @@ public class ChannelDebug {
         do {
             superClasses.add(clazz.getName());
             clazz = clazz.getSuperclass();
-        } while(!clazz.equals(Object.class));
+        } while(clazz != null && !clazz.equals(Object.class));
         superClasses.add(Object.class.getName());
         return superClasses;
     }
