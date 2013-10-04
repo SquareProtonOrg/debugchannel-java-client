@@ -1,0 +1,32 @@
+<project default="all">
+
+    <property name="project.title" value="UberDebug"/>
+    <property name="main.class" value="uberdebug.client.Main"/>
+
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="src.dir" value="${basedir}/src"/>
+    <property name="artifact.dir" value="${build.dir}/artifact"/>
+    <property name="artifact.name" value="${project.title}.jar"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="prepare">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+    </target>
+
+    <target name="compile" depends="prepare">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+    </target>
+
+    <target name="package" depends="compile">
+        <jar destfile=""
+    </target>
+
+    <target name="all" depends="clean, compile"/>
+
+
+</project>
