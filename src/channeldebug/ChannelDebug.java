@@ -143,7 +143,7 @@ public class ChannelDebug {
     	List<Object> stack = new LinkedList<Object>();
     	for (StackTraceElement element : new Exception().getStackTrace()) {
     		Map<String, String> position = new HashMap<String, String>();
-    		position.put("location", "" + element.getLineNumber());
+    		position.put("location", "" + element.getFileName());
     		position.put("fn", String.format("%s->%s:%d", 
     			element.getClassName(),
     			element.getMethodName(),
