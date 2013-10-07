@@ -138,6 +138,27 @@ public class ChannelDebug {
         }
     }
 
+    private Object buildStackTrace(int dropCount)
+    {
+    	List<Object> stack = new LinkedList<Object>();
+    	for (StackTraceElement element : new Exception().getStackTrace()) {
+    		Map<String, String> position = new HashMap<String, String>();
+    		position.put("location", "" + element.getLineNumber());
+    		position.put("fn", String.format("%s->%s:%d", 
+    			element.getClassName(),
+    			element.getMethodName(),
+    			element.getLineNumber()
+    		));
+    		stack.add(position);
+    	}
+    	for(int i = 0; i < dropCount; i++) {
+    		if(stack.isEmpty()) 
+    			throw new RuntimeException();
+    		stack.remove(0);
+    	}
+    	return stack;
+    }
+
     private Object wrap(Object object)
     {
         Map<String, Object> wrapper = new HashMap<String, Object>();
@@ -145,7 +166,7 @@ public class ChannelDebug {
         args.add(object);
         wrapper.put("handler", "object");
         wrapper.put("args", args);
-        wrapper.put("stacktrace", new LinkedList<Object>());
+        wrapper.put("stacktrace", buildStackTrace(4));
         return wrapper;
     }
 
