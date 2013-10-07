@@ -116,9 +116,8 @@ public class ChannelDebug {
                 } else {
                     int hash = System.identityHashCode(fieldValue);
                     if(history.contains(hash)) {
-                        System.out.println("DETECTED REFERENCE");
                         recursionDetected = true;
-                        fieldMap.put(field.getName(), "REFERENCE");
+                        fieldMap.put(field.getName(), "RECURSION");
                     } else {
                         Set<Integer> historyNew = new HashSet<Integer>(history);
                         historyNew.add(System.identityHashCode(object));
