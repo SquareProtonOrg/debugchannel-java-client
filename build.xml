@@ -1,4 +1,4 @@
-<project default="package">
+<project default="build">
 
     <property name="project.title" value="ChannelDebug"/>
 
@@ -55,7 +55,7 @@
         </javac>
     </target>
 
-    <target name="test" depends="compile-test, package">
+    <target name="test">
         <junit printsummary="yes" fork="no">
             <classpath>
                 <path path="${artifact.name}"/>
@@ -66,5 +66,9 @@
         </junit>
     </target>
 
+    <!-- macros -->
+    <target name="build" depends="package, compile-test"/>
+
+    <target name="all" depends="package, compile-test, test"/>
 
 </project>
