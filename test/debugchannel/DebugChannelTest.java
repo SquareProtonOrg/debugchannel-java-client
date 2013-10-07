@@ -1,4 +1,4 @@
-package channeldebug;
+package debugchannel;
 
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -7,14 +7,14 @@ import java.util.LinkedList;
 
 import static junit.framework.Assert.*;
 
-public class ChannelDebugTest extends TestCase {
+public class DebugChannelTest extends TestCase {
 
-    private ChannelDebug debug;
+    private DebugChannel debug;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();    //To change body of overridden methods use File | Settings | File Templates.
-        debug = new ChannelDebug("http://192.168.2.17", 1025, "hello/world");
+        debug = new DebugChannel("http://192.168.2.17", 1025, "hello/world");
     }
 
     public void testLogOfNullDoesNotThrowException()

@@ -1,4 +1,4 @@
-package channeldebug;
+package debugchannel;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,13 +14,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
-public class ChannelDebug {
+public class DebugChannel {
 
     private final String USER_AGENT = "Mozilla/5.0";
     private URL url;
     private final static String SCALAR_KEY = "scalar";
 
-    public ChannelDebug(String host, int port, String channel)
+    public DebugChannel(String host, int port, String channel)
     {
         try {
         url = new URL(String.format("%s:%s/%s", host, port, channel));

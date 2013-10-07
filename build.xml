@@ -1,6 +1,6 @@
 <project default="build">
 
-    <property name="project.title" value="ChannelDebug"/>
+    <property name="project.title" value="DebugChannel"/>
 
     <property name="build.dir" value="${basedir}/build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
@@ -62,7 +62,7 @@
                 <path path="${test.classes.dir}"/>
             </classpath>
             <formatter type="plain"/>
-            <test name="channeldebug.ChannelDebugTest"/>
+            <test name="debugchannel.DebugChannelTest"/>
         </junit>
     </target>
 
